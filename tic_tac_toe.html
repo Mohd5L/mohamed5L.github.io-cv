@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Tic-Tac-Toe — Play | Mohamed Allawati</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{
+      --bg: #070707;
+      --panel: #0f1011;
+      --accent: #00ff41;
+      --muted: #9aa0a6;
+      --mono: 'Courier New', Courier, monospace;
+      --text: #e6e6e6; /* explicit text color for cells */
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg,#050505 0%, #0a0a0a 100%);
+      color: var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .app{
+      width:100%;
+      max-width:720px;
+      background:var(--panel);
+      border:1px solid rgba(0,255,65,0.06);
+      border-radius:12px;
+      padding:20px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+    }
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .title{font-family:var(--mono);color:var(--accent);font-weight:700}
+    .controls{display:flex;gap:10px;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .btn.primary{border-color:var(--accent);color:var(--accent)}
+    #board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+    /* ===== FIX: explicit text color, weight and text-shadow so X/O are visible ===== */
+    .cell{
+      background:#0b0b0b;
+      border-radius:10px;
+      height:110px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:48px;
+      cursor:pointer;
+      border:2px solid rgba(255,255,255,0.03);
+      transition:transform .12s, background .12s;
+      user-select:none;
+
+      /* explicit visible text styling */
+      color: var(--text) !important;
+      font-weight: 800;
+      font-family: var(--mono);
+      text-shadow: 0 1px 0 rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.45);
+      line-height: 1;
+    }
+    .cell:hover{transform:translateY(-4px)}
+    /* keep disabled cells readable (avoid fully hiding the text) */
+    .cell.disabled{
+      cursor:default;
+      opacity:0.9; /* slightly dim background but keep text visible */
+      transform:none;
+    }
+    .status{margin-top:14px;color:var(--muted);font-size:0.95rem}
+    .footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:0.9rem}
+    @media(max-width:520px){.cell{height:80px;font-size:36px}}
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="tic tac toe game">
+    <div class="header">
+      <div>
+        <div class="title"><i class="fas fa-gamepad"></i> Tic‑Tac‑Toe</div>
+        <div style="font-size:0.9rem;color:var(--muted)">Play vs human — two players on same device</div>
+      </div>
+      <div class="controls">
+        <a href="index.html" class="btn" title="Back to portfolio"><i class="fas fa-arrow-left"></i> Back</a>
+        <button id="reset" class="btn primary"><i class="fas fa-rotate"></i> Reset</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+      <div style="min-width:160px;">
+        <div style="font-family:var(--mono);color:var(--accent);font-weight:700;">Current player</div>
+        <div id="current" style="font-size:1.6rem;margin-top:6px;">X</div>
+      </div>
+      <div style="flex:1;">
+        <div class="status" id="status">Click any cell to start the game.</div>
+      </div>
+    </div>
+
+    <div id="board" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="footer">
+      <div>Built by <strong>Mohamed Allawati</strong></div>
+      <div>Good luck!</div>
+    </div>
+  </div>
+
+  <script>
+    // Game state
+    const board = Array(9).fill(" ");
+    let currentPlayer = "X";
+    const boardEl = document.getElementById("board");
+    const currentEl = document.getElementById("current");
+    const statusEl = document.getElementById("status");
+    const buttons = [];
+
+    function checkWinner() {
+      const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      for (const [a,b,c] of lines) {
+        if (board[a] !== " " && board[a] === board[b] && board[a] === board[c]) return board[a];
+      }
+      return null;
+    }
+
+    function isBoardFull(){ return !board.includes(" "); }
+
+    function handleClick(i) {
+      if (board[i] === " " && !checkWinner() && !isBoardFull()) {
+        board[i] = currentPlayer;
+        buttons[i].textContent = currentPlayer;
+        buttons[i].classList.add('disabled');
+        const winner = checkWinner();
+        if (winner) {
+          statusEl.textContent = `Player ${winner} wins!`;
+          alert(`Player ${winner} wins!`);
+          disableAll();
+        } else if (isBoardFull()) {
+          statusEl.textContent = `It's a draw!`;
+          alert("It's a draw!");
+          disableAll();
+        } else {
+          currentPlayer = currentPlayer === "X" ? "O" : "X";
+          currentEl.textContent = currentPlayer;
+          statusEl.textContent = `Player ${currentPlayer}'s turn.`;
+        }
+      }
+    }
+
+    function disableAll(){ buttons.forEach(btn => btn.classList.add('disabled')); }
+
+    function resetGame() {
+      for (let i=0;i<9;i++){
+        board[i] = " ";
+        buttons[i].textContent = "";
+        buttons[i].classList.remove('disabled');
+      }
+      currentPlayer="X";
+      currentEl.textContent=currentPlayer;
+      statusEl.textContent="Click any cell to start the game.";
+    }
+
+    // Build board UI
+    for (let i=0;i<9;i++){
+      const cell = document.createElement('button');
+      cell.className = 'cell';
+      cell.setAttribute('aria-label', `cell ${i+1}`);
+      cell.addEventListener('click', ()=>handleClick(i));
+      boardEl.appendChild(cell);
+      buttons.push(cell);
+    }
+
+    document.getElementById('reset').addEventListener('click', resetGame);
+    resetGame();
+  </script>
+</body>
+</html>
