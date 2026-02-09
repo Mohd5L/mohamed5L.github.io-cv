@@ -179,6 +179,13 @@
             margin-top: 8px;
         }
 
+        /* --- Skills & Certifications tweaks --- */
+        #skills-certifications .card-grid { gap: 20px; }
+        #skills-certifications .card h3 { margin-top: 6px; }
+        @media (max-width: 900px) {
+          #skills-certifications .card-grid { grid-template-columns: 1fr; }
+        }
+
         /* --- Education & Languages --- */
         .edu-item {
             border-left: 2px solid var(--accent);
@@ -359,20 +366,25 @@
                         <span class="tag">Automation</span>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header">
                         <i class="fab fa-windows folder-icon"></i>
                     </div>
                     <h3>Win10 Vulnerability Assessment</h3>
                     <p>Independently discovered 4 vulnerabilities in Windows 10 via manual exploitation and misconfiguration analysis.</p>
+
+                    <!-- Download link for the assessment README -->
                     <a class="play-link" href="./Ethical_Hacking_Vulnerability_Assessment_Project.txt" download>
-                    <i class="fas fa-download">Download assessment (README)</i> 
+                      <i class="fas fa-download"></i> Download assessment (README)
                     </a>
+
                     <div class="tags" style="margin-top:12px">
                         <span class="tag">Red Teaming</span>
                         <span class="tag">Exploitation</span>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header">
                         <i class="fas fa-chart-line folder-icon"></i>
@@ -404,6 +416,79 @@
 
             </div>
         </div>
+    </section>
+
+    <!-- New Skills & Certifications Section -->
+    <section id="skills-certifications">
+      <div class="container">
+        <h2 class="section-title">04. Skills & Certifications</h2>
+
+        <div class="card-grid" style="grid-template-columns: 1fr 360px; gap: 24px;">
+          <!-- Technical Skills -->
+          <div class="card">
+            <div class="card-header">
+              <i class="fas fa-laptop-code folder-icon"></i>
+            </div>
+            <h3>Technical Skills</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 12px;">
+              Practical skills across offensive security, forensics, development, and automation.
+            </p>
+
+            <div style="margin-bottom: 12px;">
+              <strong style="color: var(--accent); font-family: var(--font-mono);">Cybersecurity & Forensics</strong>
+              <ul style="margin-top:8px; color: var(--text-secondary);">
+                <li>Web exploitation: XSS, SQLi</li>
+                <li>Network reconnaissance & scanning</li>
+                <li>Linux privilege escalation</li>
+                <li>Digital forensics: Autopsy, OSForensics, ExifTool</li>
+              </ul>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <strong style="color: var(--accent); font-family: var(--font-mono);">Languages</strong>
+              <div class="tags" style="margin-top:8px">
+                <span class="tag">Python</span>
+                <span class="tag">C++</span>
+                <span class="tag">Bash</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">SQL</span>
+              </div>
+            </div>
+
+            <div>
+              <strong style="color: var(--accent); font-family: var(--font-mono);">Tools & Platforms</strong>
+              <div class="tags" style="margin-top:8px">
+                <span class="tag">Kali Linux</span>
+                <span class="tag">SANS SIFT</span>
+                <span class="tag">SeedVM</span>
+                <span class="tag">GitHub</span>
+                <span class="tag">GitHub Copilot</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          <div class="card">
+            <div class="card-header">
+              <i class="fas fa-certificate folder-icon"></i>
+            </div>
+            <h3>Certifications</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 10px;">
+              Formal training and recognitions.
+            </p>
+
+            <ul style="padding-left: 18px; color: var(--text-primary); line-height: 1.6;">
+              <li><strong>IC3 Digital Literacy Certification</strong></li>
+              <li><strong>Python & Competitive Programming</strong> — GUtech CS Club / ACM</li>
+              <li><strong>IELTS Academic — Band 6.5</strong></li>
+            </ul>
+
+            <a class="play-link" href="#contact" style="display:inline-block; margin-top:14px;">Contact for copies / verification</a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="contact" style="padding-bottom: 20px;">
@@ -477,4 +562,3 @@
     </script>
 </body>
 </html>
-
